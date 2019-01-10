@@ -16,6 +16,7 @@ class MATCH_LSTM_CNN():
     def build(self,conf):
         seq1 = Input(name='seq1', shape=[self.config['seq1_maxlen']])
         seq2 = Input(name='seq2', shape=[self.config['seq2_maxlen']])
+        seq3 = Input(name='seq3', shape=[self.config['seq3_maxlen']])
         embedding = Embedding(self.config['vocab_size'], self.config['embed_size'], weights=[self.config['embed']], trainable = self.config['embed_trainable'])
         N = self.config['embed_size']
 
@@ -23,14 +24,24 @@ class MATCH_LSTM_CNN():
         seq1_embed = Dropout(0.5, noise_shape=(None,self.config['seq1_maxlen'],self.config['embed_size']))(seq1_embed)
         seq2_embed = embedding(seq2)
         seq2_embed = Dropout(0.5, noise_shape=(None,self.config['seq2_maxlen'],self.config['embed_size']))(seq2_embed)
+        seq3_embed = embedding(seq3)
+        seq3_embed = Dropout(0.5, noise_shape=(None,self.config['seq3_maxlen'],self.config['embed_size']))(seq3_embed)
         share_lstm = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))
         seq1_rep_rnn = share_lstm(seq1_embed)
         seq2_rep_rnn = share_lstm(seq2_embed)
+        seq3_rep_rnn = share_lstm(seq3_embed)
+
+        subj_rep = Lambda(lambda xin: K.mean(xin, axis=1))(seq3_rep_rnn)
+        subj_rep = RepeatVector(self.config['seq3_maxlen'])(subj_rep)
+
+        seq1_rep_rnn = merge([seq1_rep_rnn,subj_rep],mode='concat')
+        seq2_rep_rnn = merge([seq2_rep_rnn,subj_rep],mode='concat')
+
 
         # calculate the sentence vector on X side using Convolutional Neural Networks
         qi_aggreg, nc_cnn = self.aggregate(self.config['seq1_maxlen'], l2reg=conf['l2reg'], cnninit=conf['cnninit'], 
-                                    cnnact=conf['cnnact'], input_dim=2*self.config['hidden_size'], inputs=seq1_rep_rnn, 
-                                    cdim={2: 1/2, 3: 1/2, 4: 1/2}, pfx='aggre_q')
+                                    cnnact=conf['cnnact'], input_dim=4*self.config['hidden_size'], inputs=seq1_rep_rnn, 
+                                    cdim={2: 1/2, 3: 1/2, 4: 1/2, 5:1/2}, pfx='aggre_q')
         # re-embed X,Y in attention space
         adim = int(N*conf['adim'])
         shared_dense_q = Dense(adim, kernel_regularizer=l2(conf['l2reg']), 
@@ -45,8 +56,8 @@ class MATCH_LSTM_CNN():
         si_foc = self.focus(N,self.config['seq1_maxlen'],qi_aggreg_attn, si_attn, seq2_rep_rnn, conf['sdim'], adim, conf['l2reg'])
 
         si_aggreg, nc_cnn = self.aggregate(self.config['seq1_maxlen'], l2reg=conf['l2reg'], cnninit=conf['cnninit'], 
-                                    cnnact=conf['cnnact'], input_dim=2*self.config['hidden_size'], inputs=si_foc, 
-                                    cdim={2: 1/2, 3: 1/2, 4: 1/2})
+                                    cnnact=conf['cnnact'], input_dim=4*self.config['hidden_size'], inputs=si_foc, 
+                                    cdim={2: 1/2, 3: 1/2, 4: 1/2,5:1/2})
         if conf['proj']:
             qi_aggreg, si_aggreg = self.projection_layer([qi_aggreg, si_aggreg],conf,nc_cnn)
         scoreS = self.mlp_ptscorer([qi_aggreg,si_aggreg], conf['Ddim'], N,  
@@ -54,7 +65,7 @@ class MATCH_LSTM_CNN():
 
         output_nodes = scoreS
 
-        model = Model(inputs=[seq1,seq2], outputs=output_nodes)
+        model = Model(inputs=[seq1,seq2,seq3], outputs=output_nodes)
         
 
        
@@ -93,7 +104,7 @@ class MATCH_LSTM_CNN():
         attn = Flatten()(attn)
 
         attn = Activation('softmax')(attn)
-        attn = RepeatVector(2*self.config['hidden_size'])(attn)
+        attn = RepeatVector(4*self.config['hidden_size'])(attn)
         attn = Permute((2,1))(attn)
         output = multiply([orig_seq, attn])
 

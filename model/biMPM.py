@@ -32,7 +32,9 @@ class BiMPM():
 
         embedding = Embedding(self.config['vocab_size'], self.config['embed_size'], weights=[self.config['embed']], trainable = self.config['embed_trainable'])
         q_embed = embedding(query)
+        q_embed = Dropout(0.5)(q_embed)
         d_embed = embedding(doc)
+        d_embed = Dropout(0.5)(d_embed)
         bilstm = BiLSTM(self.config['hidden_size'], dropout=self.config['dropout_rate'])
         q_outs, q_out = bilstm(q_embed)
         d_outs, d_out = bilstm(d_embed)

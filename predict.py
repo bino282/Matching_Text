@@ -31,12 +31,12 @@ def predict(data, output,model):
     out = open(output, 'w')
     for q, cl in data:
         scores = []
-        q_w = " ".join(q[1])
+        q_w = q[1]
         for j, c in enumerate(cl):
-            c_w = " ".join(c[1])
+            c_w = c[1]
             if(len(c_w)==0):
                 c_w ="unkown"
-            s_w = " ".join(q[3])
+            s_w = q[3]
             score, pred = predictAux(q_w, c_w,s_w,model)
             scores.append( [ score, j, 0, pred ] )
         scores = sorted(scores, key=lambda score: score[0], reverse=True)

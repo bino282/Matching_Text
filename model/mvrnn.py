@@ -18,7 +18,9 @@ class MATCH_LSTM():
         embedding = Embedding(self.config['vocab_size'], self.config['embed_size'], weights=[self.config['embed']], trainable = self.config['embed_trainable'])
 
         seq1_embed = embedding(seq1)
+        seq1_embed = Dropout(0.5)(seq1_embed)
         seq2_embed = embedding(seq2)
+        seq2_embed = Dropout(0.5)(seq2_embed)
 
         seq1_rep = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))(seq1_embed)
         seq2_rep = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))(seq2_embed)
