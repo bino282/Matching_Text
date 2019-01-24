@@ -163,9 +163,9 @@ def predictAux(q_w, c_w,voc2index,max_len,model):
     q_v = to_vector(q_w,voc2index,max_len)
     c_v = to_vector(c_w,voc2index,max_len)
     pred = model.predict([q_v,c_v])[0]
-    if pred[1] > 0.5:
-        return pred[1], 'true'
-    return pred[1], 'false'
+    if pred[0] > 0.5:
+        return pred[0], 'true'
+    return pred[0], 'false'
 
 def predict(data,voc2index,max_len,output,model):
     dict_cat = {'Life in Qatar':0, 'Qatar Living Tigers....':1, 'Computers and Internet':2, 'Language':3, 'Family Life in Qatar':4, 'Pets and Animals':5, 'Advice and Help':6, 'Opportunities':7, 'Cars and driving':8, 'Politics':9, 'Environment':10, 'Beauty and Style':11, 'Moving to Qatar':12, 'Qatari Culture':13, 'Salary and Allowances':14, 'Welcome to Qatar':15, 'Cars':16, 'Working in Qatar':17, 'Doha Shopping':18, 'Health and Fitness':19, 'Investment and Finance':20, 'Qatar Living Lounge':21, 'Socialising':22, 'Education':23, 'Missing home!':24, 'Sightseeing and Tourist attractions':25, 'Electronics':26, 'Qatar 2022':27, 'Visas and Permits':28, 'Funnies':29, 'Sports in Qatar':30}
@@ -201,9 +201,9 @@ def map_score(s1s_dev,s2s_dev,y_pred,labels_dev):
         s1 = " ".join(s1s_dev[i])
         s2 = " ".join(s2s_dev[i])
         if s1 in QA_pairs:
-            QA_pairs[s1].append((s2, labels_dev[i], pred[1]))
+            QA_pairs[s1].append((s2, labels_dev[i], pred[0]))
         else:
-            QA_pairs[s1] = [(s2, labels_dev[i], pred[1])]
+            QA_pairs[s1] = [(s2, labels_dev[i], pred[0])]
 
     MAP, MRR = 0, 0
     num_q = len(QA_pairs.keys())
