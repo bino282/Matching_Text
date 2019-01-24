@@ -15,7 +15,7 @@ from keras.engine.topology import Layer
 
 config = json.load(open('config.json', 'r'))
 model = load_model("./model_saved/model-lstm-cnn.h5")
-max_len = 150
+max_len = 100
 with open('voc2index.pkl','rb') as fr:
   voc2index  = pickle.load(fr)
 def predictAux(q_w, c_w,s_w,model):
