@@ -119,7 +119,7 @@ class MATCH_LSTM_CNN():
                                     activation='linear', name=pfx+'hdn%d'%(i))
                 mlp_input = Activation('tanh')(shared_dense(mlp_input))
 
-        shared_dense = Dense(2, kernel_regularizer=l2(l2reg), activation=oact, name=pfx+'mlp')
+        shared_dense = Dense(1, kernel_regularizer=l2(l2reg), activation=oact, name=pfx+'mlp')
         mlp_out = shared_dense(mlp_input)
         
         return mlp_out
