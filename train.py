@@ -7,7 +7,7 @@ from keras.callbacks import ModelCheckpoint,EarlyStopping
 import pickle
 path_dev = './data/test/SemEval2016-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
 path_test= './data/test/SemEval2017-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
-path_embeding = '../../word_vector/gensim_glove_vectors_300d.txt'
+path_embeding = './word_vector/gensim_glove_vectors_300d.txt'
 config = json.load(open('config.json', 'r'))
 dataPath = config['TRAIN']['path']
 fileList = config['TRAIN']['files']
