@@ -10,7 +10,13 @@ def preprocessor(sentence):
     sentence = utils.to_unicode(sentence)
     sentence = sentence.lower()
     sentence = word_tokenize(sentence)
-    sentence = " ".join(sentence)
+    newsentence = []
+    for w in sentence:
+        if(w.isdigit()):
+            newsentence.append('<number>')
+        else:
+            newsentence.append(w)
+    sentence = " ".join(newsentence)
     return sentence
 
 def read_embed(embed_path,embed_size,vocab):
