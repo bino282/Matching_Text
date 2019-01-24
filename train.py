@@ -66,11 +66,11 @@ model_config={'seq1_maxlen':max_len_q,'seq2_maxlen':max_len_a,'seq3_maxlen':max_
                 'embed_trainable':True,
                 'channel':5,
                 'aggre_size':100,
-                'target_mode':'classification'}
+                'target_mode':'ranking'}
 def ranknet(y_true, y_pred):
     return K.mean(K.log(1. + K.exp(-(y_true * y_pred - (1-y_true) * y_pred))), axis=-1)
 
-model_lstm = lstm_cnn_att_sub.MATCH_LSTM_CNN(config=model_config).model
+model_lstm = biMPM.BiMPM(config=model_config).model
 print(model_lstm.summary())
 optimize = optimizers.Adam(lr=0.0001)
 model_lstm.compile(loss='binary_crossentropy',optimizer=optimize,metrics=['accuracy'])
@@ -81,15 +81,15 @@ early_stop = EarlyStopping(monitor='val_loss',min_delta=0.0001,patience=3)
 MAP_last = 0
 for epoch in range(150):
     print('Train on iteration {}'.format(epoch))
-    model_lstm.fit([seq1_input,seq2_input,subj_input],labels_train,batch_size=128,epochs=1,
-                validation_data=([seq1_input_dev,seq2_input_dev,subj_input_dev],labels_dev))
-    y_pred = model_lstm.predict([seq1_input_dev,seq2_input_dev,subj_input_dev])
+    model_lstm.fit([seq1_input,seq2_input,s1s_len_train,s2s_len_train],labels_train,batch_size=128,epochs=1,
+                validation_data=([seq1_input_dev,seq2_input_dev,s1s_len_dev,s2s_len_dev],labels_dev))
+    y_pred = model_lstm.predict([seq1_input_dev,seq2_input_dev,s1s_len_dev,s2s_len_dev])
     MAP_dev,MRR_dev = map_score(s1s_dev,s2s_dev,y_pred,labels_dev)
     print('MAP_dev = {}, MRR_dev = {}'.format(MAP_dev,MRR_dev))
     if(MAP_dev>MAP_last):
         model_lstm.save('./model_saved/model-lstm-cnn.h5')
         print('Model saved !')
         MAP_last = MAP_dev
-    y_test = model_lstm.predict([seq1_input_test,seq2_input_test,subj_input_test])
+    y_test = model_lstm.predict([seq1_input_test,seq2_input_test,s1s_len_test,s2s_len_test])
     MAP_test,MRR_test = map_score(s1s_test,s2s_test,y_test,labels_test)
     print('MAP_test = {}, MRR_test = {}'.format(MAP_test,MRR_test))
