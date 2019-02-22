@@ -41,6 +41,6 @@ class SELF_ATT():
 
         mlp_input = concatenate([sum_vec, mul_vec])
 
-        output = Dense(2, activation="softmax")(mlp_input)
+        output = Dense(1, activation="softmax")(mlp_input)
         model = Model(inputs=[seq1, seq2], outputs=output)
         return model
