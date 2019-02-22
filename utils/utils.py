@@ -19,7 +19,7 @@ def read_embed(embed_path,embed_size,vocab):
     for i in range(len(vocab)):
         try:
             embedding_vector = model_word2vec[vocab[i]]
-            embedding_matrix[i] = embedding_vector
+            embedding_matrix[i+1] = embedding_vector
         except:
             embedding_matrix[i] = np.random.uniform(-0.25, 0.25, embed_size).astype("float32")
     voc2index = {}
@@ -152,12 +152,12 @@ def convert_data_to_index(string_data, vocab):
     return index_data
 def convertData_model(data,voc2index,max_len):
     data_model = [convert_data_to_index(x,voc2index) for x in data]
-    data_model = sequence.pad_sequences(data_model,maxlen=max_len,value=len(voc2index),padding='post',truncating="post")
+    data_model = sequence.pad_sequences(data_model,maxlen=max_len,padding='post',truncating="post")
     return data_model
 
 def to_vector(q_w,voc2index,max_len):
     q_w_mat = convert_data_to_index(q_w,voc2index)
-    q_w_mat = sequence.pad_sequences([q_w_mat],maxlen=max_len,value=len(voc2index),padding='post',truncating="post")
+    q_w_mat = sequence.pad_sequences([q_w_mat],maxlen=max_len,padding='post',truncating="post")
     return q_w_mat
 def predictAux(q_w, c_w,voc2index,max_len,model):
     q_v = to_vector(q_w,voc2index,max_len)

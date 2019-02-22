@@ -20,7 +20,7 @@ class SELF_ATT():
         seq1_embed = embedding(seq1)
         seq1_embed = Dropout(0.5)(seq1_embed)
         seq2_embed = embedding(seq2)
-        seq2_embed = Dropout(seq2_embed)
+        seq2_embed = Dropout(0.5)(seq2_embed)
 
         pos_emb = Position_Embedding()
         att = Attention(8, 16)
