@@ -52,7 +52,7 @@ def constructData(dataPath, fileList,mode="TRAIN",path_dev=""):
                 body = bodyQ._get_firstChild().data if bodyQ._get_firstChild() is not None else ''
                 subjQ = relQ.getElementsByTagName('RelQSubject')[0]
                 subj = subjQ._get_firstChild().data if subjQ._get_firstChild() is not None else ''
-                questions.append( (Qid, preprocessor(body),Qcat,preprocessor(subj)) )
+                questions.append( (Qid, preprocessor(body+' '+subj),Qcat,preprocessor(subj)) )
                 comments = []
                 for relC in thread.getElementsByTagName('RelComment'):
                     Cid = relC.getAttribute('RELC_ID')
