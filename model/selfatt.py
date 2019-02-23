@@ -32,19 +32,11 @@ class SELF_ATT():
         seq1_embed = pos_emb(seq1_rep_rnn)
         seq2_embed = pos_emb(seq2_rep_rnn)
 
-        seq1_seq = att([seq1_embed,seq1_embed,seq1_embed])
-        seq1_seq = GlobalAveragePooling1D()(seq1_seq)
-        seq1_seq = Dropout(0.5)(seq1_seq)
+        final_rep = att([seq1_embed,seq2_embed,seq2_embed])
+        final_rep = GlobalAveragePooling1D()(final_rep)
+        final_rep = Dropout(0.5)(final_rep)
 
-        seq2_seq = att([seq2_embed,seq2_embed,seq2_embed])
-        seq2_seq = GlobalAveragePooling1D()(seq2_seq)
-        seq2_seq = Dropout(0.5)(seq2_seq)
 
-        sum_vec = add([seq1_seq,seq2_seq])
-        mul_vec = multiply([seq1_seq,seq2_seq])
-
-        mlp_input = concatenate([sum_vec, mul_vec])
-
-        output = Dense(1, activation="sigmoid")(mlp_input)
+        output = Dense(1, activation="sigmoid")(final_rep)
         model = Model(inputs=[seq1, seq2], outputs=output)
         return model
