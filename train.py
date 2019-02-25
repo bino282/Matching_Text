@@ -5,6 +5,8 @@ from keras import optimizers
 import keras.backend as K
 from keras.callbacks import ModelCheckpoint,EarlyStopping
 import pickle
+from keras.models import load_model
+from layers.attention import Position_Embedding,Attention
 path_dev = './data/test/SemEval2016-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
 path_test= './data/test/SemEval2017-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
 path_embeding = '../../local/word_vector/gensim_glove_vectors_300d.txt'
@@ -70,7 +72,12 @@ model_config={'seq1_maxlen':max_len_q,'seq2_maxlen':max_len_a,'seq3_maxlen':max_
 def ranknet(y_true, y_pred):
     return K.mean(K.log(1. + K.exp(-(y_true * y_pred - (1-y_true) * y_pred))), axis=-1)
 
-model_lstm = selfatt.SELF_ATT(config=model_config).model
+try:
+    model_lstm = load_model("./model_saved/model-lstm-cnn.h5",custom_objects={'Position_Embedding':Position_Embedding,'Attention':Attention})
+    print("Load model success......")
+except:
+    print("Creating new model......")
+    model_lstm = selfatt.SELF_ATT(config=model_config).model
 print(model_lstm.summary())
 optimize = optimizers.Adam(lr=0.0001)
 model_lstm.compile(loss='binary_crossentropy',optimizer=optimize,metrics=['accuracy'])
