@@ -13,9 +13,10 @@ from keras import backend as K
 from keras.engine.topology import Layer
 from layers.attention import Position_Embedding,Attention
 
-
+pos_emb = Position_Embedding()
+att = Attention(8, 64)
 config = json.load(open('config.json', 'r'))
-model = load_model("./model_saved/model-lstm-cnn.h5",custom_objects={'Position_Embedding':Position_Embedding,'Attention':Attention(nb_head=8,size_per_head=64)})
+model = load_model("./model_saved/model-lstm-cnn.h5",custom_objects={'Position_Embedding':pos,'Attention':att})
 max_len = 100
 with open('voc2index.pkl','rb') as fr:
   voc2index  = pickle.load(fr)
