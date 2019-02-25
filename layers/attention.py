@@ -31,6 +31,13 @@ class Position_Embedding(Layer):
             return input_shape
         elif self.mode == 'concat':
             return (input_shape[0], input_shape[1], input_shape[2] + self.size)
+    def get_config(self):
+        config = {
+            'size': self.size,
+            'mode': self.mode,
+        }
+        base_config = super(Position_Embedding, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
 
 
 class Attention(Layer):
