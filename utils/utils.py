@@ -19,9 +19,9 @@ def read_embed(embed_path,embed_size,vocab):
     for i in range(len(vocab)):
         try:
             embedding_vector = model_word2vec[vocab[i]]
-            embedding_matrix[i+1] = embedding_vector
+            embedding_matrix[i] = embedding_vector
         except:
-            embedding_matrix[i+1] = np.random.uniform(-0.25, 0.25, embed_size).astype("float32")
+            embedding_matrix[i] = np.random.uniform(-0.25, 0.25, embed_size).astype("float32")
 
     return embedding_matrix
 
