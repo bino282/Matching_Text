@@ -11,10 +11,11 @@ import scipy.stats as stats
 from utils.utils import to_vector,constructData,debug
 from keras import backend as K
 from keras.engine.topology import Layer
+from layers.attention import Position_Embedding,Attention
 
 
 config = json.load(open('config.json', 'r'))
-model = load_model("./model_saved/model-lstm-cnn.h5")
+model = load_model("./model_saved/model-lstm-cnn.h5",custom_objects={'Position_Embedding':Position_Embedding,'Attention':Attention})
 max_len = 100
 with open('voc2index.pkl','rb') as fr:
   voc2index  = pickle.load(fr)
@@ -35,7 +36,7 @@ def predict(data, output,model):
         for j, c in enumerate(cl):
             c_w = c[1]
             if(len(c_w)==0):
-                c_w ="unkown"
+                c_w ="<PAD>"
             s_w = q[3]
             score, pred = predictAux(q_w, c_w,s_w,model)
             scores.append( [ score, j, 0, pred ] )
