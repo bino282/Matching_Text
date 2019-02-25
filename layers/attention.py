@@ -97,3 +97,11 @@ class Attention(Layer):
 
     def compute_output_shape(self, input_shape):
         return (input_shape[0][0], input_shape[0][1], self.output_dim)
+    
+    def get_config(self):
+        config = {
+            'nb_head': self.nb_head,
+            'size_per_head': self.size_per_head,
+        }
+        base_config = super(Attention, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
