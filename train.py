@@ -60,7 +60,7 @@ labels_test = np.asarray(labels_test)
 
 print(seq1_input.shape)
 model_config={'seq1_maxlen':max_len_q,'seq2_maxlen':max_len_a,'seq3_maxlen':max_len_s,
-                'vocab_size':len(voc2index)+1,'embed_size':300,
+                'vocab_size':len(voc2index),'embed_size':300,
                 'hidden_size':128,'dropout_rate':0.5,
                 'embed':embed_matrix,
                 'embed_trainable':True,
@@ -89,7 +89,7 @@ for epoch in range(150):
     if(MAP_dev>MAP_last):
         model_lstm.save('./model_saved/model-lstm-cnn.h5')
         print('Model saved !')
-        MAP_last = MAP_dev
+        MAP_last = MAP_dev                                              
     y_test = model_lstm.predict([seq1_input_test,seq2_input_test])
     MAP_test,MRR_test = map_score(s1s_test,s2s_test,y_test,labels_test)
     print('MAP_test = {}, MRR_test = {}'.format(MAP_test,MRR_test))

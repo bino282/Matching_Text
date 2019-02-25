@@ -15,16 +15,13 @@ def preprocessor(sentence):
 
 def read_embed(embed_path,embed_size,vocab):
     model_word2vec = gensim.models.KeyedVectors.load_word2vec_format(embed_path)
-    embedding_matrix = np.zeros((len(vocab)+1,embed_size))
+    embedding_matrix = np.zeros((len(vocab),embed_size))
     for i in range(len(vocab)):
         try:
             embedding_vector = model_word2vec[vocab[i]]
             embedding_matrix[i+1] = embedding_vector
         except:
             embedding_matrix[i+1] = np.random.uniform(-0.25, 0.25, embed_size).astype("float32")
-    voc2index = {}
-    for i in range(len(vocab)):
-        voc2index[vocab[i]] = i
 
     return embedding_matrix
 
@@ -132,6 +129,7 @@ def read_constructData(data_contruct):
 
 def creat_vocab(data):
     vocab = set()
+    vocab.add('<PAD>')
     voc2index = {}
     index2voc = {}
     for text in data:
