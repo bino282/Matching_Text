@@ -16,7 +16,7 @@ from layers.attention import Position_Embedding,Attention
 
 config = json.load(open('config.json', 'r'))
 model = load_model("./model_saved/model-lstm-cnn.h5",custom_objects={'Position_Embedding':Position_Embedding,'Attention':Attention})
-max_len = 100
+max_len = 80
 with open('voc2index.pkl','rb') as fr:
   voc2index  = pickle.load(fr)
 def predictAux(q_w, c_w,s_w,model):
