@@ -80,7 +80,7 @@ except:
     model_lstm = selfatt.SELF_ATT(config=model_config).model
 print(model_lstm.summary())
 optimize = optimizers.Adam(lr=0.0001)
-model_lstm.compile(loss='binary_crossentropy',optimizer=optimize,metrics=['accuracy'])
+model_lstm.compile(loss='sparse_categorical_crossentropy',optimizer=optimize,metrics=['accuracy'])
 checkpoint = ModelCheckpoint("./model_saved/model-lstm-cnn-{epoch:02d}-{val_acc:.2f}.h5", monitor='val_loss', verbose=1, save_best_only=True)
 early_stop = EarlyStopping(monitor='val_loss',min_delta=0.0001,patience=3)
 
