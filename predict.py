@@ -24,9 +24,9 @@ def predictAux(q_w, c_w,s_w,model):
     c_v = to_vector(c_w,voc2index,max_len= max_len)
     s_v = to_vector(s_w,voc2index,max_len= max_len)
     pred = model.predict([q_v,c_v])[0]
-    if pred[0] > 0.5:
-        return pred[0], 'true'
-    return pred[0], 'false'
+    if pred[1] > 0.5:
+        return pred[1], 'true'
+    return pred[1], 'false'
 
 def predict(data, output,model):
     out = open(output, 'w')

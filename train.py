@@ -63,7 +63,7 @@ labels_test = np.asarray(labels_test)
 print(seq1_input.shape)
 model_config={'seq1_maxlen':max_len_q,'seq2_maxlen':max_len_a,'seq3_maxlen':max_len_s,
                 'vocab_size':len(voc2index),'embed_size':300,
-                'hidden_size':256,'dropout_rate':0.5,
+                'hidden_size':300,'dropout_rate':0.5,
                 'embed':embed_matrix,
                 'embed_trainable':True,
                 'channel':5,

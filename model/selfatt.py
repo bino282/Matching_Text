@@ -37,6 +37,6 @@ class SELF_ATT():
         final_rep = Dropout(0.5)(final_rep)
 
 
-        output = Dense(1, activation="sigmoid")(final_rep)
+        output = Dense(2, activation="softmax")(final_rep)
         model = Model(inputs=[seq1, seq2], outputs=output)
         return model
