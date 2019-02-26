@@ -22,13 +22,12 @@ class SELF_ATT():
         seq2_embed = embedding(seq2)
         seq2_embed = Dropout(0.5)(seq2_embed)
 
-        lstm1 = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))
-        lstm2 = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))
-        seq1_rep_rnn = lstm1(seq1_embed)
-        seq2_rep_rnn = lstm2(seq2_embed)
+        lstm = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))
+        seq1_rep_rnn = lstm(seq1_embed)
+        seq2_rep_rnn = lstm(seq2_embed)
 
         pos_emb = Position_Embedding()
-        att = Attention(16, 64)
+        att = Attention(8, 32)
 
         seq1_embed = pos_emb(seq1_rep_rnn)
         seq2_embed = pos_emb(seq2_rep_rnn)
