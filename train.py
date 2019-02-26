@@ -28,9 +28,9 @@ with open('voc2index.pkl','wb') as fw:
     pickle.dump(voc2index,fw)
 print('vocab_size: ',len(vocab))
 embed_matrix = read_embed(path_embeding,embed_size=300,vocab=vocab)
-max_len_q = 80
-max_len_a = 80
-max_len_s = 80
+max_len_q = 100
+max_len_a = 100
+max_len_s = 100
 seq1_input = convertData_model(s1s_train,voc2index,max_len=max_len_q)
 seq2_input = convertData_model(s2s_train,voc2index,max_len=max_len_a)
 subj_input = convertData_model(subj_train,voc2index,max_len = max_len_s)

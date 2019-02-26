@@ -15,7 +15,7 @@ class SELF_ATT():
     def build(self):
         seq1 = Input(name='seq1', shape=[self.config['seq1_maxlen']])
         seq2 = Input(name='seq2', shape=[self.config['seq2_maxlen']])
-        embedding = Embedding(self.config['vocab_size'], self.config['embed_size'], weights=[self.config['embed']], trainable = self.config['embed_trainable'])
+        embedding = Embedding(self.git pull['vocab_size'], self.config['embed_size'], weights=[self.config['embed']], trainable = self.config['embed_trainable'])
 
         seq1_embed = embedding(seq1)
         seq1_embed = Dropout(0.5)(seq1_embed)
@@ -27,7 +27,7 @@ class SELF_ATT():
         seq2_rep_rnn = share_lstm(seq2_embed)
 
         pos_emb = Position_Embedding()
-        att = Attention(8, 64)
+        att = Attention(16, 64)
 
         seq1_embed = pos_emb(seq1_rep_rnn)
         seq2_embed = pos_emb(seq2_rep_rnn)
