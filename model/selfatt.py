@@ -22,7 +22,7 @@ class SELF_ATT():
         seq2_embed = embedding(seq2)
         seq2_embed = Dropout(0.5)(seq2_embed)
 
-        lstm = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))
+        lstm = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True))
         seq1_rep_rnn = lstm(seq1_embed)
         seq2_rep_rnn = lstm(seq2_embed)
 
