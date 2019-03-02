@@ -129,13 +129,13 @@ def read_constructData(data_contruct):
 
 def creat_vocab(data):
     vocab = set()
-    vocab.add('<PAD>')
     voc2index = {}
     index2voc = {}
     for text in data:
         for w in text.split():
             vocab.add(w)
     vocab = list(vocab)
+    vocab.insert(0, "<PAD>")
     for i in range(len(vocab)):
         voc2index[vocab[i]] = i
         index2voc[i] = vocab[i]
