@@ -139,6 +139,7 @@ def creat_vocab(data):
     for i in range(len(vocab)):
         voc2index[vocab[i]] = i
         index2voc[i] = vocab[i]
+    print(voc2index[0])
     return vocab,voc2index,index2voc
 
 def convert_data_to_index(string_data, vocab):
