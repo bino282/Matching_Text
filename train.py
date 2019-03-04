@@ -23,7 +23,7 @@ data_test = constructData(dataPath, fileList,mode='DEV',path_dev=path_test)
 
 s1s_train,s2s_train,subj_train,users_train,labels_train,cat_train = read_constructData(data_train)
 
-vocab, voc2index, index2voc = creat_vocab(s1s_train+s2s_train+subj_train)
+vocab, voc2index, index2voc = creat_vocab(s1s_train+s2s_train)
 with open('voc2index.pkl','wb') as fw:
     pickle.dump(voc2index,fw)
 print('vocab_size: ',len(vocab))
