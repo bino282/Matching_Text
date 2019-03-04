@@ -27,7 +27,7 @@ class SELF_ATT():
         seq2_rep_rnn = lstm(seq2_embed)
 
         pos_emb = Position_Embedding()
-        att = Attention(8, 32)
+        att = Attention(8, 64)
 
         seq1_embed = pos_emb(seq1_rep_rnn)
         seq2_embed = pos_emb(seq2_rep_rnn)
