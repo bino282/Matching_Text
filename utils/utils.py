@@ -9,7 +9,7 @@ from keras.preprocessing import sequence
 def preprocessor(sentence):
     sentence = utils.to_unicode(sentence)
     sentence = sentence.lower()
-    sentence = word_tokenize.tokenize(sentence)
+    sentence = word_tokenize(sentence)
     sentence = " ".join(sentence)
     return sentence
 
