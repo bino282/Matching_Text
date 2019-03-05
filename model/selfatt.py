@@ -26,13 +26,9 @@ class SELF_ATT():
         seq1_rep_rnn = lstm(seq1_embed)
         seq2_rep_rnn = lstm(seq2_embed)
 
-        pos_emb = Position_Embedding()
         att = Attention(8, 64)
 
-        seq1_embed = pos_emb(seq1_rep_rnn)
-        seq2_embed = pos_emb(seq2_rep_rnn)
-
-        final_rep = att([seq1_embed,seq2_embed,seq2_embed])
+        final_rep = att([seq1_rep_rnn,seq2_rep_rnn,seq2_rep_rnn])
         final_rep = GlobalAveragePooling1D()(final_rep)
         final_rep = Dropout(0.5)(final_rep)
 

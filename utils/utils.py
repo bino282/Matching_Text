@@ -9,7 +9,8 @@ from keras.preprocessing import sequence
 def preprocessor(sentence):
     sentence = utils.to_unicode(sentence)
     sentence = sentence.lower()
-    sentence = re.sub('[^a-z]',' ',sentence)
+    sentence = word_tokenize.tokenize(sentence)
+    sentence = " ".join(sentence)
     return sentence
 
 def read_embed(embed_path,embed_size,vocab):
