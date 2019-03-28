@@ -9,7 +9,7 @@ from keras.models import load_model
 from layers.attention import Position_Embedding,Attention
 path_dev = './data/test/SemEval2016-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
 path_test= './data/test/SemEval2017-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
-path_embeding = '../local/word_vector/gensim_glove_vectors_300d.txt'
+path_embeding = '../local/word_vector/gensim_glove_vectors.txt'
 config = json.load(open('config.json', 'r'))
 dataPath = config['TRAIN']['path']
 fileList = config['TRAIN']['files']
