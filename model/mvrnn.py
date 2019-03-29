@@ -7,7 +7,7 @@ from keras.optimizers import Adam
 from layers import Match,MatchTensor
 from layers.SpatialGRU import *
 
-class MATCH_LSTM():
+class MVRNN():
     def __init__(self,config):
         self.config = config
         self.model = self.build()
@@ -22,8 +22,9 @@ class MATCH_LSTM():
         seq2_embed = embedding(seq2)
         seq2_embed = Dropout(0.5)(seq2_embed)
 
-        seq1_rep = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))(seq1_embed)
-        seq2_rep = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))(seq2_embed)
+        lstm = Bidirectional(LSTM(self.config['hidden_size'], return_sequences=True, dropout=self.config['dropout_rate']))
+        seq1_rep = lstm(seq1_embed)
+        seq2_rep = lstm(seq2_embed)
 
         cross = Match(match_type='concat')([seq1_rep, seq2_rep])
         cross_reshape = Reshape((-1, ))(cross)
