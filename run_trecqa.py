@@ -16,7 +16,6 @@ from keras.layers.embeddings import Embedding
 from keras.layers.convolutional import Convolution1D, MaxPooling1D
 from keras.layers.core import Activation, Dense, Dropout, Flatten, Lambda, Permute, RepeatVector
 from keras.layers.recurrent import GRU, LSTM
-from keras.layers import CuDNNGRU, CuDNNLSTM
 
 from keras import backend as K
 import tensorflow as tf
@@ -95,7 +94,7 @@ def config():
     c['l2reg'] = 1e-4
                                               
     c['rnnbidi'] = True                      
-    c['rnn'] = CuDNNLSTM
+    c['rnn'] = LSTM
     c['rnnbidi_mode'] = concatenate
     c['rnnact'] = 'tanh'
     c['rnninit'] = 'glorot_uniform'                      
