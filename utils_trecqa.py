@@ -67,7 +67,7 @@ class GloVe(Embedder):
         dimension N. """
         self.N = N
         self.g = dict()
-        self.glovepath = glovepath % (N,)
+        self.glovepath = glovepath
 
         with open(self.glovepath, 'r') as f:
             for line in f:
