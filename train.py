@@ -1,6 +1,6 @@
 import json
 from utils.utils import *
-from model import biMPM,lstm_cnn,lstm_cnn_att_sub,selfatt
+from model import biMPM,lstm_cnn,lstm_cnn_att_sub,selfatt,mvrnn
 from keras import optimizers
 import keras.backend as K
 from keras.callbacks import ModelCheckpoint,EarlyStopping
@@ -9,7 +9,7 @@ from keras.models import load_model
 from layers.attention import Position_Embedding,Attention
 path_dev = './data/test/SemEval2016-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
 path_test= './data/test/SemEval2017-Task3-CQA-QL-test-subtaskA.xml.subtaskA.relevancy'
-path_embeding = '../../local/word_vector/gensim_glove_vectors_300d.txt'
+path_embeding = '../local/word_vector/gensim_glove_vectors.txt'
 config = json.load(open('config.json', 'r'))
 dataPath = config['TRAIN']['path']
 fileList = config['TRAIN']['files']
@@ -80,7 +80,7 @@ try:
     print("Load model success......")
 except:
     print("Creating new model......")
-    model_lstm = selfatt.SELF_ATT(config=model_config).model
+    model_lstm = mvrnn.MVRNN(config=model_config).model
 print(model_lstm.summary())
 optimize = optimizers.Adam(lr=0.0001)
 model_lstm.compile(loss='sparse_categorical_crossentropy',optimizer=optimize,metrics=['accuracy'])
