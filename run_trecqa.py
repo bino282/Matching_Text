@@ -446,15 +446,12 @@ if __name__ == "__main__":
     trainf = 'data_trecqa/train-all.csv' 
     valf = 'data_trecqa/dev.csv'
     testf = 'data_trecqa/test.csv'
-    glovepath = '../../local/word_vector/glove.840B.300d.txt'
+    glovepath = '../../local/word_vector/glove.6B.300d.txt'
     params = []
     conf, ps, h = config()
-
-
     if conf['emb'] == 'Glove': 
         print('GloVe')
         emb = utils_trecqa.GloVe(N=conf['embdim'],glovepath=glovepath)
-
     print('Dataset')
     load_data(trainf,valf,testf)
     runid = 'Model-%x' % (h)
