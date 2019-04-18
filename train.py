@@ -41,6 +41,8 @@ s1s_len_train = np.asarray(s1s_len_train)
 s2s_len_train = np.asarray(s2s_len_train)
 labels_train = np.asarray(labels_train)
 
+anchor_train,dev_train,data_dev
+
 s1s_dev,s2s_dev,subj_dev,users_dev,labels_dev,cat_dev = read_constructData(data_dev)
 seq1_input_dev = convertData_model(s1s_dev,voc2index,max_len=max_len_q)
 seq2_input_dev = convertData_model(s2s_dev,voc2index,max_len=max_len_a)

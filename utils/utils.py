@@ -165,6 +165,23 @@ def predictAux(q_w, c_w,voc2index,max_len,model):
         return pred[1], 'true'
     return pred[1], 'false'
 
+def generate_triplets(seq1,seq2,labels,n_triplets):
+	triplets = []
+	anchor = []
+	pos_sample = []
+	neg_sample = []
+	for x in range(n_triplets):
+		idx = np.random.randint(0, len(labels))
+		idx_matches = np.where(labels == labels[idx])[0]
+		idx_no_matches = np.where(labels != labels[idx])[0]
+		idx_a, idx_p = np.random.choice(idx_matches, 2, replace=False)
+		idx_n = np.random.choice(idx_no_matches, 1)[0]
+		triplets.append([idx_a, idx_p, idx_n])
+	for e in triplets:
+		anchor.append(seq1[e[0]])
+		pos_sample.append(seq2[e[1]])
+		neg_sample.append(seq2[e[2]])
+	return anchor,pos_sample,neg_sample
 
 def map_score(s1s_dev,s2s_dev,y_pred,labels_dev):
     QA_pairs = {}
